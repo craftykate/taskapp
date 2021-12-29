@@ -1,0 +1,13 @@
+:root {
+  --main: rgb(0, 229, 166);
+  --accent: rgb(229, 0, 63);
+  --subAccent: rgb(229, 166, 0);
+  --gray: #545252;
+  --mediumGray: #878585;
+  --lightGray: #cecece;
+  --text: #2e2e2e;
+  --error: rgb(230, 61, 61);
+  --lightError: rgb(255, 238, 238);
+  --success: rgb(28, 179, 28);
+  --lightSuccess: rgb(198, 255, 198);
+}

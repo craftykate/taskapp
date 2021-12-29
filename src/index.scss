@@ -1,4 +1,4 @@
-@import 'Styles/styles.scss';
+@import 'Styles/styles.css';
 
 body {
   margin: 0;
@@ -6,7 +6,28 @@ body {
     Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-size: 20px;
   font-size: clamp(100%, 1rem + 2vw, 20px);
-  color: $text;
+  color: var(--text);
   /* -webkit-font-smoothing: antialiased; */
   /* -moz-osx-font-smoothing: grayscale; */
+}
+#wrapper {
+  margin: 0 auto;
+  padding: 20px;
+  width: 95%;
+  max-width: 800px;
+  min-width: 375px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 500px) {
+  #wrapper {
+    width: 100%;
+  }
+}
+a {
+  text-decoration: none;
+}
+@media (hover: hover) {
+  a:hover {
+    color: var(--subAccent);
+  }
 }

@@ -1,0 +1,26 @@
+#footer {
+  margin-top: 20px;
+  text-align: center;
+  clear: both;
+  color: var(--text);
+  font-size: 1rem;
+  ul {
+    margin-bottom: 10px;
+    li {
+      display: inline;
+      &:not(:first-child)::before {
+        content: ' | ';
+        color: var(--text);
+      }
+    }
+  }
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+@media (hover: hover) {
+  #footer a:hover {
+    color: var(--subAccent);
+  }
+}
