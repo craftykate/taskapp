@@ -10,9 +10,11 @@
     "@types/node": "^12.20.39",
     "@types/react": "^16.14.21",
     "@types/react-dom": "^16.9.14",
+    "env-cmd": "^10.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "sass": "^1.45.1",
     "typescript": "^4.5.4",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
@@ -29,10 +31,16 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "start:local": "env-cmd -f .env.local react-scripts start",
+    "start:prod": "env-cmd -f .env.prod react-scripts start",
+    "build": "react-scripts build",
+    "build_local": "react-scripts build && mkdir -p builds && mv -f build builds/local",
+    "build_prod": "react-scripts build && cp build/index.html build/200.html && mkdir -p builds && mv -f build builds/prod",
+    "build:local": "env-cmd -f .env.local npm run-script build_local",
+    "build:prod": "env-cmd -f .env.prod npm run-script build_prod"
   },
   "eslintConfig": {
     "extends": [
