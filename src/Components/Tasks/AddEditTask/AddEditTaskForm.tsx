@@ -93,7 +93,7 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
           </div>
         </div>
         <div className={formClasses.submitButtons}>
-          <Button type='submit'>{itemToEdit ? 'Save' : 'Add'}</Button>
+          <Button type='submit'>{itemToEdit ? 'Save Task' : 'Add Task'}</Button>
           <Button isPlainText type='reset'>
             Cancel
           </Button>

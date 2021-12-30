@@ -231,6 +231,13 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         order: 2,
         isVisible: true,
       },
+      {
+        id: 1640902406334,
+        text: 'Chores',
+        emoji: '🏠',
+        order: 3,
+        isVisible: true,
+      },
     ]
     const tasks = config.defaultTasks || []
     set('kt-tags', tags)
@@ -264,6 +271,13 @@ export const TasksContextProvider: React.FC = ({ children }) => {
           text: 'Someday',
           emoji: '🟢',
           order: 2,
+          isVisible: true,
+        },
+        {
+          id: 1640902406334,
+          text: 'Chores',
+          emoji: '🏠',
+          order: 3,
           isVisible: true,
         },
       ]

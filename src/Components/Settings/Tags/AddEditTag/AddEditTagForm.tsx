@@ -84,7 +84,7 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
           placeholder='*Tag Name'
           ref={textField.inputRef}
         />
-        <Button type='submit'>Add</Button>
+        <Button type='submit'>Add Tag</Button>
         <Button type='reset' isPlainText>
           Cancel
         </Button>

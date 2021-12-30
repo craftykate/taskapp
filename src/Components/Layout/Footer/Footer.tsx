@@ -10,17 +10,22 @@ const Footer: React.FC = () => {
       <footer id={classes.footer}>
         <ul>
           <li>
-            Site built by <a href='https://katemcfaul.surge.sh'>Kate McFaul</a>
+            <Link to='/settings'>Settings</Link>
           </li>
           <li>
-            <Link to='/settings'>Settings</Link>
+            Site built by <a href='https://katemcfaul.surge.sh'>Kate McFaul</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            Works offline! Save me to your desktop or mobile home screen for
+            easy access, no internet required.
           </li>
         </ul>
         <ul>
           <li>
             This site stores all tasks and tags in your browser. If you clear
-            your browser data your info will go with it. Accounts will be
-            available in the future for a select few!
+            your browser data your info will go with it.
           </li>
         </ul>
       </footer>

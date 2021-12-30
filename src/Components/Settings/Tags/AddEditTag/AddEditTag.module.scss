@@ -1,7 +1,8 @@
 .addTag {
   margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--text);
+  padding: 10px;
+  border: 1px solid var(--mediumGray);
+  border-radius: 5px;
   .instructions {
     margin-bottom: 10px;
     font-size: 0.7em;
