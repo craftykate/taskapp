@@ -5,7 +5,7 @@ import Home from 'Pages/Home'
 import Layout from 'Components/Layout/Layout'
 import Settings from 'Pages/Settings'
 // Hooks
-import { useScroll } from 'Hooks/useScroll'
+import { useScroll } from 'Hooks/use-scroll'
 
 function App() {
   // Scroll to top of page or down to hash

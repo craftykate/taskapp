@@ -1,0 +1,18 @@
+#tagList {
+  .instructions {
+    margin-bottom: 10px;
+    font-size: 0.7em;
+  }
+  tr {
+    line-height: 140%;
+    cursor: move;
+    td {
+      &:first-child {
+        padding-right: 10px;
+      }
+      &:nth-child(2) {
+        width: 99%;
+      }
+    }
+  }
+}

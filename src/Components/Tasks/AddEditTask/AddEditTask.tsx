@@ -5,7 +5,7 @@ import AddEditTaskForm from './AddEditTaskForm'
 // Context
 import TasksContext from 'Context/tasks-context'
 // Hooks
-import useInput from 'Hooks/useInputs'
+import useInput from 'Hooks/use-input'
 
 const AddEditTask: React.FC = () => {
   const {

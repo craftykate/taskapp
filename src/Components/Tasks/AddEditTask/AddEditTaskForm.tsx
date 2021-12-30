@@ -9,6 +9,7 @@ import Button from 'Components/UI/Button/Button'
 import Message from 'Components/UI/Message/Message'
 import TextButton from 'Components/UI/TextButton/TextButton'
 import Modal from 'Components/UI/Modal/Modal'
+import AddEditTag from 'Components/Settings/Tags/AddEditTag/AddEditTag'
 
 type AddEditTaskFormPropTypes = {
   saveToDoHandler: (e: React.FormEvent) => void
@@ -98,6 +99,7 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
           </Button>
         </div>
       </Form>
+      <AddEditTag />
     </Modal>
   )
 }
