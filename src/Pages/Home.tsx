@@ -1,5 +1,8 @@
+// Components
+import Tasks from 'Components/Tasks/Tasks'
+
 const Home: React.FC = () => {
-  return <>home</>
+  return <Tasks />
 }
 
 export default Home

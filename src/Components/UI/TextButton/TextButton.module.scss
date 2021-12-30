@@ -1,0 +1,11 @@
+.textButton {
+  cursor: pointer;
+  &:not(.plainText) {
+    color: var(--accent);
+  }
+}
+@media (hover: hover) {
+  .textButton:hover {
+    color: var(--subAccent);
+  }
+}

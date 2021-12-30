@@ -1,0 +1,29 @@
+#taskTable {
+  tr {
+    line-height: 110%;
+    &.header {
+      font-weight: bold;
+    }
+    &.item {
+      td {
+        &:first-child {
+          text-align: center;
+          padding-right: 0.5rem;
+          color: var(--lightGray);
+        }
+        &:nth-child(2) {
+          width: 99%;
+        }
+        &:last-child {
+          padding-left: 1rem;
+        }
+        .completed {
+          text-decoration: line-through;
+        }
+      }
+    }
+    &.lastRow:not(:last-child) > td {
+      padding-bottom: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.addForm {
+  input {
+    width: 100%;
+  }
+  #tagDiv {
+    margin: 25px 0;
+    font-size: 0.8em;
+    #tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      p {
+        margin-bottom: 10px;
+      }
+      .tag {
+        margin: 0 0.5em 0.5em 0;
+        padding: 0.1em 0.3em 0.2em 0.3em;
+        color: var(--text);
+        border: 1px solid var(--text);
+        border-radius: 5px;
+      }
+      .chosen {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+    }
+  }
+}
+
+@media (hover: hover) {
+  #tags :hover {
+    color: var(--subAccent);
+    border-color: var(--subAccent);
+  }
+}

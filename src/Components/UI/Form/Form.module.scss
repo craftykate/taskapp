@@ -1,0 +1,30 @@
+.form {
+  .title {
+    color: var(--main);
+  }
+  .row {
+    margin-bottom: 10px;
+    & * {
+      margin-right: 3px;
+    }
+  }
+  input,
+  select {
+    font-size: 16px;
+    padding: 0.2rem;
+    outline: none;
+    border: 1px solid var(--lightGray);
+    border-radius: 3px;
+    &.invalid {
+      border: 1px solid var(--error);
+      background-color: var(--lightError);
+    }
+  }
+  .fieldError {
+    font-size: 0.8rem;
+    color: var(--error);
+  }
+  .submitButtons button:not(:last-child) {
+    margin-right: 10px;
+  }
+}

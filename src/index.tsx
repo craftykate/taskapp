@@ -4,14 +4,17 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.scss'
 import App from 'Components/App/App'
 import 'Utils/Config/config'
+import { TasksContextProvider } from 'Context/tasks-context'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <TasksContextProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </TasksContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
