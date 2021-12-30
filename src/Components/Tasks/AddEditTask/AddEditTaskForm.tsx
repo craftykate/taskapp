@@ -12,7 +12,7 @@ import Modal from 'Components/UI/Modal/Modal'
 import AddEditTag from 'Components/Settings/Tags/AddEditTag/AddEditTag'
 
 type AddEditTaskFormPropTypes = {
-  saveToDoHandler: (e: React.FormEvent) => void
+  saveTaskHandler: (e: React.FormEvent) => void
   resetForm: () => void
   formError: string
   textFieldError: boolean
@@ -34,7 +34,7 @@ type AddEditTaskFormPropTypes = {
 }
 
 const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
-  saveToDoHandler,
+  saveTaskHandler,
   resetForm,
   formError,
   textFieldError,
@@ -50,7 +50,7 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
       title={itemToEdit ? 'Edit Task' : 'Add Task'}
     >
       <Form
-        onSubmit={saveToDoHandler}
+        onSubmit={saveTaskHandler}
         onReset={resetForm}
         className={classes.addForm}
       >

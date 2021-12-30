@@ -43,7 +43,7 @@ const AddEditTask: React.FC = () => {
   }
 
   // Validate form, save if all okay
-  const saveToDoHandler = (e: React.FormEvent) => {
+  const saveTaskHandler = (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitted(true)
 
@@ -97,7 +97,7 @@ const AddEditTask: React.FC = () => {
 
   return (
     <AddEditTaskForm
-      saveToDoHandler={saveToDoHandler}
+      saveTaskHandler={saveTaskHandler}
       resetForm={resetForm}
       formError={formError}
       textFieldError={textFieldError}

@@ -30,14 +30,26 @@ const TagList: React.FC = () => {
         const dragItemOrder = dragItem.order
         const dropItemOrder = dropItem.order
 
-        // TODO: Right now this swaps items, it would be nice to squeeze the
-        // item into the spot in the future
+        const moveDirection = dragItemOrder > dropItemOrder ? 'up' : 'down'
+        const modifier = moveDirection === 'up' ? 1 : -1
+
         const updatedAllTags = allTags.map((item) => {
           if (item.id === +dragId) {
             item.order = +dropItemOrder
-          }
-          if (item.id === +target.id) {
-            item.order = +dragItemOrder
+          } else {
+            // If item is between the drag and drop spot OR it is the drop spot,
+            // update the value
+            if (
+              (moveDirection === 'up' &&
+                item.order > dropItemOrder &&
+                item.order < dragItemOrder) ||
+              (moveDirection === 'down' &&
+                item.order < dropItemOrder &&
+                item.order > dragItemOrder) ||
+              item.order === dropItemOrder
+            ) {
+              item.order = item.order + modifier
+            }
           }
           return item
         })

@@ -22,7 +22,7 @@ const AddEditTag: React.FC = () => {
   const allItems = [emojiField, textField]
 
   // Validate form, save if all okay
-  const saveToDoHandler = (e: React.FormEvent) => {
+  const saveTagHandler = (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitted(true)
 
@@ -56,7 +56,7 @@ const AddEditTag: React.FC = () => {
 
   return (
     <AddEditTagForm
-      saveToDoHandler={saveToDoHandler}
+      saveTagHandler={saveTagHandler}
       resetForm={resetForm}
       formError={formError}
       emojiField={emojiField}

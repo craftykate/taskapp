@@ -7,7 +7,7 @@ import Message from 'Components/UI/Message/Message'
 import Button from 'Components/UI/Button/Button'
 
 type AddEditTagFormPropTypes = {
-  saveToDoHandler: (e: React.FormEvent) => void
+  saveTagHandler: (e: React.FormEvent) => void
   resetForm: () => void
   formError: string
   emojiField: {
@@ -37,7 +37,7 @@ type AddEditTagFormPropTypes = {
 }
 
 const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
-  saveToDoHandler,
+  saveTagHandler,
   resetForm,
   formError,
   emojiField,
@@ -49,7 +49,7 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
     <Form
       title='Add New Tag'
       className={classes.addTag}
-      onSubmit={saveToDoHandler}
+      onSubmit={saveTagHandler}
       onReset={resetForm}
     >
       <p className={classes.instructions}>Emoji is optional, limit to 1</p>
