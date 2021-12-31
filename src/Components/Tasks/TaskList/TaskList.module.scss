@@ -4,11 +4,13 @@
     &.header {
       font-weight: bold;
     }
+    td:first-child {
+      padding-right: 0.5rem;
+    }
     &.item {
       td {
         &:first-child {
           text-align: center;
-          padding-right: 0.5rem;
           color: var(--lightGray);
         }
         &:nth-child(2) {
