@@ -14,15 +14,15 @@ const TaskList: React.FC = () => {
   const [dragCat, setDragCat] = React.useState<string>()
 
   const catTags = allTags.filter((tag) => {
-    return focusTag ? tag.id === focusTag : tag.id > 0
+    return focusTag ? tag.id === focusTag : tag.id > 1
   })
   catTags.sort((a, b) => a.order - b.order)
 
-  const noCatTag = allTags.find((tag) => tag.id === 0)
+  const noCatTag = allTags.find((tag) => tag.id === 1)
   const noCatItems = allTasks.filter((task) =>
-    Object.keys(task.order).includes('0')
+    Object.keys(task.order).includes('1')
   )
-  noCatItems.sort((a, b) => a.order['0'] - b.order['0'])
+  noCatItems.sort((a, b) => a.order['1'] - b.order['1'])
 
   // Set which item is being dragged
   const handleDrag = (e: React.DragEvent) => {
