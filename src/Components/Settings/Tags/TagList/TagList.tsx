@@ -9,7 +9,8 @@ import TasksContext from 'Context/tasks-context'
 
 const TagList: React.FC = () => {
   const { allTags, sortTags, deleteTag } = React.useContext(TasksContext)
-  allTags.sort((a, b) => a.order - b.order)
+  const catTags = allTags.filter((tag) => tag.id !== 0)
+  catTags.sort((a, b) => a.order - b.order)
 
   const [dragId, setDragId] = React.useState<number>()
 
@@ -66,7 +67,7 @@ const TagList: React.FC = () => {
       </p>
       <table>
         <tbody>
-          {allTags.map((tag) => (
+          {catTags.map((tag) => (
             <TagRow
               tag={tag}
               key={tag.id}

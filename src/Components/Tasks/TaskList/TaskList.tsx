@@ -9,9 +9,17 @@ import TasksContext from 'Context/tasks-context'
 
 const TaskList: React.FC = () => {
   const { allTasks, allTags, sortTasks } = React.useContext(TasksContext)
-  const [showUncat, setShowUncat] = React.useState(true)
   const [dragId, setDragId] = React.useState<number>()
   const [dragCat, setDragCat] = React.useState<string>()
+
+  const catTags = allTags.filter((tag) => tag.id > 0)
+  catTags.sort((a, b) => a.order - b.order)
+
+  const noCatTag = allTags.find((tag) => tag.id === 0)
+  const noCatItems = allTasks.filter((task) =>
+    Object.keys(task.order).includes('0')
+  )
+  noCatItems.sort((a, b) => a.order['0'] - b.order['0'])
 
   // Set which item is being dragged
   const handleDrag = (e: React.DragEvent) => {
@@ -72,14 +80,10 @@ const TaskList: React.FC = () => {
     }
   }
 
-  const noCatItems = allTasks.filter((task) =>
-    Object.keys(task.order).includes('blank')
-  )
-  noCatItems.sort((a, b) => a.order.blank - b.order.blank)
   return (
     <table id={classes.taskTable}>
       <tbody>
-        {allTags.map((tag) => {
+        {catTags.map((tag) => {
           const tagItems = allTasks.filter((item) =>
             Object.keys(item.order).includes(tag.id.toString())
           )
@@ -96,16 +100,9 @@ const TaskList: React.FC = () => {
             />
           )
         })}
-        {noCatItems.length > 0 && (
+        {noCatTag && noCatItems.length > 0 && (
           <TaskCategory
-            tag={{
-              text: 'Uncategorized',
-              emoji: null,
-              isVisible: showUncat,
-              id: -1,
-            }}
-            showUncat={showUncat}
-            setShowUncat={setShowUncat}
+            tag={noCatTag}
             tagTasks={noCatItems}
             handleDrag={handleDrag}
             handleDrop={handleDrop}

@@ -31,41 +31,23 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
 }) => {
   const { toggleTagVisibility } = React.useContext(TasksContext)
   const symbol = tag.emoji ? <Emoji symbol={tag.emoji} /> : null
-  const showHide =
-    tag.text !== 'Uncategorized' ? (
-      tag.isVisible ? (
-        <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
-          &#8897;
-        </TextButton>
-      ) : (
-        <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
-          &#8722;
-        </TextButton>
-      )
-    ) : setShowUncat ? (
-      showUncat ? (
-        <TextButton isPlainText onClick={() => setShowUncat(false)}>
-          &#8897;
-        </TextButton>
-      ) : (
-        <TextButton isPlainText onClick={() => setShowUncat(true)}>
-          &#8722;
-        </TextButton>
-      )
-    ) : null
+  const showHide = tag.isVisible ? <>&#8897;</> : <>&#8722;</>
+
   return (
     <>
       {/* Display category name */}
       <tr className={classes.header}>
         <td>{symbol}</td>
         <td>
-          {tag.text} {showHide}
+          {tag.text}{' '}
+          <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
+            {showHide}
+          </TextButton>
         </td>
         <td></td>
       </tr>
-      {((tag.text !== 'Uncategorized' && tag.isVisible) ||
-        (tag.text === 'Uncategorized' && showUncat)) &&
-        /* Display all to do items under that category */
+      {tag.isVisible &&
+        /* Display all task items under that category */
         tagTasks.map((item, index) => {
           const key = `${item.id}_${index}`
           const isLastRow = index === tagTasks.length - 1

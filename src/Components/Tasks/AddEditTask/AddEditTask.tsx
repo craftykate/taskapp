@@ -22,6 +22,9 @@ const AddEditTask: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false)
   const [formError, setFormError] = React.useState<string>('')
   const [chosenTags, setChosenTags] = React.useState<string[]>([])
+  const catTags = allTags
+    .filter((tag) => tag.id !== 0)
+    .sort((a, b) => a.order - b.order)
 
   // Set up each field
   const { field: textField } = useInput(true)
@@ -102,7 +105,7 @@ const AddEditTask: React.FC = () => {
       formError={formError}
       textFieldError={textFieldError}
       textField={textField}
-      allTags={allTags}
+      allTags={catTags}
       chosenTags={chosenTags}
       updateTags={updateTags}
       itemToEdit={itemToEdit}

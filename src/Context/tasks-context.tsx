@@ -55,25 +55,15 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   // Sets the order so item is at the end of every tag assigned
   const addTaskToEnd = (tags: string[]) => {
     let order = {}
-    if (tags.length > 0) {
-      tags.forEach((tag) => {
-        const matchingTags = allTasks.filter((task) =>
-          Object.keys(task.order).includes(tag)
-        )
-        order = {
-          ...order,
-          [tag]: matchingTags.length,
-        }
-      })
-    } else {
+    tags.forEach((tag) => {
       const matchingTags = allTasks.filter((task) =>
-        Object.keys(task.order).includes('blank')
+        Object.keys(task.order).includes(tag)
       )
       order = {
-        blank: matchingTags.length,
+        ...order,
+        [tag]: matchingTags.length,
       }
-    }
-    console.log(order)
+    })
 
     return order
   }
@@ -102,6 +92,8 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     const id = +`${new Date().getTime()}${
       Math.floor(Math.random() * 899) + 100
     }`
+    // If no tags assigned, assign it to uncategorized tag
+    tags = tags.length === 0 ? ['0'] : tags
     // Determine order under each tag
     const order = addTaskToEnd(tags)
 
@@ -138,29 +130,31 @@ export const TasksContextProvider: React.FC = ({ children }) => {
       let order = { ...prevItem.order }
 
       // If a task used to not have tags and now does, remove the blank
-      if (tags.length > 0 && Object.keys(prevItem).includes('blank')) {
-        delete order.blank
+      if (tags.includes('0') && tags.length > 1) {
+        delete order['0']
         prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
       }
 
       // If a tag was added, add task to end of that list
       tags.forEach((tag) => {
-        if (!Object.keys(order).includes(tag.toString())) {
-          const matchingItems = prevState.filter((item) =>
-            Object.keys(item.order).includes(tag.toString())
-          )
-          order = {
-            ...order,
-            [tag.toString()]: matchingItems.length,
+        if (tag !== '0') {
+          if (!Object.keys(order).includes(tag.toString())) {
+            const matchingItems = prevState.filter((item) =>
+              Object.keys(item.order).includes(tag.toString())
+            )
+            order = {
+              ...order,
+              [tag.toString()]: matchingItems.length,
+            }
           }
+          prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
         }
-        prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
       })
 
       // If a tag was removed, remove that tag from task and re-sort all tasks
       // that also have that task
       Object.keys(prevItem.order).forEach((oldTag) => {
-        if (!tags.includes(oldTag)) {
+        if (oldTag !== '0' && !tags.includes(oldTag)) {
           delete order[oldTag]
         }
         prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
@@ -168,8 +162,8 @@ export const TasksContextProvider: React.FC = ({ children }) => {
       })
 
       // If tag used to have tags and now doesn't, add in the blank
-      if (!Object.keys(prevItem.order).includes('blank') && tags.length === 0) {
-        order = addTaskToEnd([])
+      if (!Object.keys(prevItem.order).includes('0') && tags.length === 0) {
+        order = addTaskToEnd(['0'])
         prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
       }
 
@@ -210,12 +204,17 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   // Delete a task
   // Note: not using filter here or all duplicates would be deleted which may
   // not be intended
-  // TODO: also need to re-sort any tasks that shared tags with this task
   const deleteTask = (id: number) => {
     setAllTasks((prevState) => {
-      const prevStateCopy = [...prevState]
+      let prevStateCopy = [...prevState]
       const deleteId = prevStateCopy.findIndex((item) => item.id === id)
+      const order = { ...prevStateCopy[deleteId].order }
       prevStateCopy.splice(deleteId, 1)
+
+      Object.keys(order).forEach((oldTag) => {
+        prevStateCopy = updateSortOrder(prevStateCopy, oldTag)
+      })
+
       set('kt-tasks', [...prevStateCopy])
       return [...prevStateCopy]
     })
@@ -304,17 +303,17 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   const resetAll = () => {
     const tags: TagType[] = [
       {
-        id: 1640387991734,
-        text: 'Now',
-        emoji: '🔴',
-        order: 0,
-        isVisible: true,
-      },
-      {
         id: 1640388007034,
         text: 'Soon',
         emoji: '🟠',
         order: 1,
+        isVisible: true,
+      },
+      {
+        id: 1640387991734,
+        text: 'Now',
+        emoji: '🔴',
+        order: 0,
         isVisible: true,
       },
       {
@@ -329,6 +328,12 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         text: 'Chores',
         emoji: '🏠',
         order: 3,
+        isVisible: true,
+      },
+      {
+        id: 0,
+        text: 'Uncategorized',
+        order: -1,
         isVisible: true,
       },
     ]
@@ -392,7 +397,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         id: 1640555021024,
         text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
         order: {
-          blank: 0,
+          '0': 0,
         },
         createdAt: 1640555021024,
         completedAt: false,
@@ -401,7 +406,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         id: 1640561989783,
         text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
         order: {
-          blank: 1,
+          '0': 1,
         },
         createdAt: 1640561989783,
         completedAt: false,
@@ -420,17 +425,17 @@ export const TasksContextProvider: React.FC = ({ children }) => {
       // Fetch tags
       const tags: TagType[] = storedTags || [
         {
-          id: 1640387991734,
-          text: 'Now',
-          emoji: '🔴',
-          order: 0,
-          isVisible: true,
-        },
-        {
           id: 1640388007034,
           text: 'Soon',
           emoji: '🟠',
           order: 1,
+          isVisible: true,
+        },
+        {
+          id: 1640387991734,
+          text: 'Now',
+          emoji: '🔴',
+          order: 0,
           isVisible: true,
         },
         {
@@ -445,6 +450,12 @@ export const TasksContextProvider: React.FC = ({ children }) => {
           text: 'Chores',
           emoji: '🏠',
           order: 3,
+          isVisible: true,
+        },
+        {
+          id: 0,
+          text: 'Uncategorized',
+          order: -1,
           isVisible: true,
         },
       ]
@@ -515,7 +526,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
           id: 1640555021024,
           text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
           order: {
-            blank: 0,
+            '0': 0,
           },
           createdAt: 1640555021024,
           completedAt: false,
@@ -524,7 +535,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
           id: 1640561989783,
           text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
           order: {
-            blank: 1,
+            '0': 1,
           },
           createdAt: 1640561989783,
           completedAt: false,
