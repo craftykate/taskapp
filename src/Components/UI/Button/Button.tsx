@@ -5,6 +5,7 @@ import classes from './Button.module.scss'
 
 type ButtonPropTypes = {
   name?: string
+  id?: string
   className?: string
   style?: {}
   isPlainText?: boolean
@@ -15,6 +16,7 @@ type ButtonPropTypes = {
 
 const Button: React.FC<ButtonPropTypes> = ({
   name,
+  id,
   className,
   style,
   isPlainText,
@@ -28,6 +30,7 @@ const Button: React.FC<ButtonPropTypes> = ({
   return (
     <button
       name={name}
+      id={id}
       className={`${baseClass} ${className}`}
       style={style}
       onClick={onClick}

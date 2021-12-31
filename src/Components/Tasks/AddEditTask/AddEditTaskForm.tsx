@@ -31,6 +31,7 @@ type AddEditTaskFormPropTypes = {
   chosenTags: string[]
   updateTags: (id: string) => void
   itemToEdit: number | undefined
+  deleteItemHandler: () => void
 }
 
 const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
@@ -43,6 +44,7 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
   chosenTags,
   updateTags,
   itemToEdit,
+  deleteItemHandler,
 }) => {
   return (
     <Modal
@@ -100,6 +102,11 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
         </div>
       </Form>
       <AddEditTag />
+      {itemToEdit && (
+        <Button id={classes.deleteTask} onClick={deleteItemHandler}>
+          Delete Task
+        </Button>
+      )}
     </Modal>
   )
 }

@@ -24,7 +24,7 @@ const TaskItem: React.FC<TaskItemPropTypes> = ({
   handleDrag,
   handleDrop,
 }) => {
-  const { completeTask, deleteTask, setItemToEdit, setShowAddEditForm } =
+  const { completeTask, setItemToEdit, setShowAddEditForm } =
     React.useContext(TasksContext)
 
   // Open add/edit form with this task's info
@@ -38,11 +38,7 @@ const TaskItem: React.FC<TaskItemPropTypes> = ({
     : `${classes.item}`
   return (
     <tr className={rowClass}>
-      <td>
-        <TextButton onClick={launchEdit} isPlainText>
-          &#x270E;
-        </TextButton>
-      </td>
+      <td></td>
       <td>
         <TextButton
           className={!!item.completedAt ? `${classes.completed}` : ''}
@@ -62,8 +58,8 @@ const TaskItem: React.FC<TaskItemPropTypes> = ({
         </TextButton>
       </td>
       <td>
-        <TextButton onClick={() => deleteTask(item.id)} isPlainText>
-          &#10005;
+        <TextButton onClick={launchEdit} isPlainText>
+          &#x270E;
         </TextButton>
       </td>
     </tr>

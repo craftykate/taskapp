@@ -16,6 +16,7 @@ const AddEditTask: React.FC = () => {
     setItemToEdit,
     allTasks,
     updateTask,
+    deleteTask,
   } = React.useContext(TasksContext)
 
   // Form states - isSubmitted is necessary for handling errors
@@ -72,6 +73,14 @@ const AddEditTask: React.FC = () => {
     }
   }
 
+  // Delete task then close form
+  const deleteItemHandler = () => {
+    if (itemToEdit) {
+      deleteTask(itemToEdit)
+      resetForm()
+    }
+  }
+
   // Reset form
   const resetForm = () => {
     setShowAddEditForm(false)
@@ -109,6 +118,7 @@ const AddEditTask: React.FC = () => {
       chosenTags={chosenTags}
       updateTags={updateTags}
       itemToEdit={itemToEdit}
+      deleteItemHandler={deleteItemHandler}
     />
   )
 }
