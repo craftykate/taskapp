@@ -15,9 +15,16 @@ import TextButton from 'Components/UI/TextButton/TextButton'
 type TaskCategoryPropTypes = {
   tag: TagType | { text: string; emoji: null; isVisible: boolean; id: number }
   tagTasks: TaskType[]
+  showUncat?: boolean
+  setShowUncat?: (arg1: boolean) => void
 }
 
-const TaskCategory: React.FC<TaskCategoryPropTypes> = ({ tag, tagTasks }) => {
+const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
+  tag,
+  tagTasks,
+  showUncat,
+  setShowUncat,
+}) => {
   const { toggleTagVisibility } = React.useContext(TasksContext)
   const symbol = tag.emoji ? <Emoji symbol={tag.emoji} /> : null
   const showHide =
@@ -28,6 +35,16 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({ tag, tagTasks }) => {
         </TextButton>
       ) : (
         <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
+          &#8722;
+        </TextButton>
+      )
+    ) : setShowUncat ? (
+      showUncat ? (
+        <TextButton isPlainText onClick={() => setShowUncat(false)}>
+          &#8897;
+        </TextButton>
+      ) : (
+        <TextButton isPlainText onClick={() => setShowUncat(true)}>
           &#8722;
         </TextButton>
       )
@@ -42,7 +59,8 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({ tag, tagTasks }) => {
         </td>
         <td></td>
       </tr>
-      {tag.isVisible &&
+      {((tag.text !== 'Uncategorized' && tag.isVisible) ||
+        (tag.text === 'Uncategorized' && showUncat)) &&
         /* Display all to do items under that category */
         tagTasks.map((item, index) => {
           const key = `${item.id}_${index}`

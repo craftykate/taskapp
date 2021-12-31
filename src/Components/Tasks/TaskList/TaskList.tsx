@@ -9,6 +9,8 @@ import TasksContext from 'Context/tasks-context'
 
 const TaskList: React.FC = () => {
   const { allTasks, allTags } = React.useContext(TasksContext)
+  const [showUncat, setShowUncat] = React.useState(true)
+
   allTags.sort((a, b) => a.order - b.order)
   const noCatItems = allTasks.filter((task) => {
     return task.tags.length === 0
@@ -25,9 +27,11 @@ const TaskList: React.FC = () => {
             tag={{
               text: 'Uncategorized',
               emoji: null,
-              isVisible: true,
+              isVisible: showUncat,
               id: -1,
             }}
+            showUncat={showUncat}
+            setShowUncat={setShowUncat}
             tagTasks={noCatItems}
           />
         )}
