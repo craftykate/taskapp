@@ -24,6 +24,8 @@ type TasksContextType = {
   setShowAddEditForm: (arg1: boolean) => void
   updateTask: (id: number, text: string, tags: string[]) => void
   updateTag: (id: number, emoji: string, text: string) => void
+  focusTag: number | undefined
+  setFocusTag: (id?: number) => void
 }
 
 // Create the context with starting values
@@ -45,6 +47,8 @@ const TasksContext = React.createContext<TasksContextType>({
   setShowAddEditForm: (arg1: boolean) => {},
   updateTask: (id: number, text: string, tags: string[]) => {},
   updateTag: (id: number, emoji: string, text: string) => {},
+  focusTag: undefined,
+  setFocusTag: (id?: number) => {},
 })
 
 // Custom provider
@@ -53,6 +57,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   const [allTags, setAllTags] = React.useState<TagType[]>([])
   const [itemToEdit, setItemToEdit] = React.useState<number | undefined>()
   const [showAddEditForm, setShowAddEditForm] = React.useState<boolean>(false)
+  const [focusTag, setFocusTag] = React.useState<number>()
 
   // Sets the order so item is at the end of every tag assigned
   const addTaskToEnd = (tags: string[]) => {
@@ -597,6 +602,8 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     setShowAddEditForm,
     updateTask,
     updateTag,
+    focusTag,
+    setFocusTag,
   }
   return (
     <TasksContext.Provider value={contextValue}>

@@ -1,4 +1,8 @@
 #addTask {
-  display: block;
+  display: inline-block;
   margin-bottom: 10px;
+}
+#links {
+  display: flex;
+  justify-content: space-between;
 }

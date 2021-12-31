@@ -12,18 +12,24 @@ import Card from 'Components/UI/Card/Card'
 import TextButton from 'Components/UI/TextButton/TextButton'
 
 const Tasks = () => {
-  const { showAddEditForm, setShowAddEditForm } = React.useContext(TasksContext)
+  const { showAddEditForm, setShowAddEditForm, focusTag, setFocusTag } =
+    React.useContext(TasksContext)
 
   return (
     <>
       {showAddEditForm && <AddEditTask />}
       <Card>
-        <TextButton
-          id={classes.addTask}
-          onClick={() => setShowAddEditForm(true)}
-        >
-          Add task
-        </TextButton>
+        <div id={classes.links}>
+          <TextButton
+            id={classes.addTask}
+            onClick={() => setShowAddEditForm(true)}
+          >
+            + Add task
+          </TextButton>
+          {focusTag && (
+            <TextButton onClick={() => setFocusTag()}>Unfocus</TextButton>
+          )}
+        </div>
         <TaskList />
       </Card>
     </>

@@ -8,11 +8,14 @@ import TaskCategory from './TaskCategory'
 import TasksContext from 'Context/tasks-context'
 
 const TaskList: React.FC = () => {
-  const { allTasks, allTags, sortTasks } = React.useContext(TasksContext)
+  const { allTasks, allTags, sortTasks, focusTag } =
+    React.useContext(TasksContext)
   const [dragId, setDragId] = React.useState<number>()
   const [dragCat, setDragCat] = React.useState<string>()
 
-  const catTags = allTags.filter((tag) => tag.id > 0)
+  const catTags = allTags.filter((tag) => {
+    return focusTag ? tag.id === focusTag : tag.id > 0
+  })
   catTags.sort((a, b) => a.order - b.order)
 
   const noCatTag = allTags.find((tag) => tag.id === 0)
@@ -97,10 +100,11 @@ const TaskList: React.FC = () => {
               key={tag.id}
               handleDrag={handleDrag}
               handleDrop={handleDrop}
+              focusTag={focusTag}
             />
           )
         })}
-        {noCatTag && noCatItems.length > 0 && (
+        {!focusTag && noCatTag && noCatItems.length > 0 && (
           <TaskCategory
             tag={noCatTag}
             tagTasks={noCatItems}

@@ -15,23 +15,33 @@ import TextButton from 'Components/UI/TextButton/TextButton'
 type TaskCategoryPropTypes = {
   tag: TagType | { text: string; emoji: null; isVisible: boolean; id: number }
   tagTasks: TaskType[]
-  showUncat?: boolean
-  setShowUncat?: (arg1: boolean) => void
   handleDrag: React.DragEventHandler
   handleDrop: React.DragEventHandler
+  focusTag?: number | undefined
 }
 
 const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
   tag,
   tagTasks,
-  showUncat,
-  setShowUncat,
   handleDrag,
   handleDrop,
+  focusTag,
 }) => {
-  const { toggleTagVisibility } = React.useContext(TasksContext)
+  const { toggleTagVisibility, setFocusTag } = React.useContext(TasksContext)
   const symbol = tag.emoji ? <Emoji symbol={tag.emoji} /> : null
-  const showHide = tag.isVisible ? <>&#8897;</> : <>&#8722;</>
+  const header = focusTag ? (
+    `Focus: ${tag.text}`
+  ) : (
+    <TextButton isPlainText onClick={() => setFocusTag(tag.id)}>
+      {tag.text}
+    </TextButton>
+  )
+  const toggleSymbol = tag.isVisible ? <>&#8897;</> : <>&#8722;</>
+  const toggleButton = focusTag ? null : (
+    <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
+      {toggleSymbol}
+    </TextButton>
+  )
 
   return (
     <>
@@ -39,14 +49,11 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
       <tr className={classes.header}>
         <td>{symbol}</td>
         <td>
-          {tag.text}{' '}
-          <TextButton isPlainText onClick={() => toggleTagVisibility(tag.id)}>
-            {showHide}
-          </TextButton>
+          {header} {toggleButton}
         </td>
         <td></td>
       </tr>
-      {tag.isVisible &&
+      {(tag.isVisible || focusTag) &&
         /* Display all task items under that category */
         tagTasks.map((item, index) => {
           const key = `${item.id}_${index}`
