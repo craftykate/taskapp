@@ -9,7 +9,7 @@ export type TagType = {
 export type TaskType = {
   id: number
   text: string
-  tags: number[]
+  order: { [key: string]: number }
   createdAt: number
   completedAt: number | false
 }

@@ -21,7 +21,7 @@ const AddEditTask: React.FC = () => {
   // Form states - isSubmitted is necessary for handling errors
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false)
   const [formError, setFormError] = React.useState<string>('')
-  const [chosenTags, setChosenTags] = React.useState<number[]>([])
+  const [chosenTags, setChosenTags] = React.useState<string[]>([])
 
   // Set up each field
   const { field: textField } = useInput(true)
@@ -30,7 +30,7 @@ const AddEditTask: React.FC = () => {
   const allItems = [textField]
 
   // Add or remove tag from list of selected tags when clicked
-  const updateTags = (id: number) => {
+  const updateTags = (id: string) => {
     setChosenTags((prevState) => {
       let prevStateCopy = [...prevState]
       if (prevStateCopy.includes(id)) {
@@ -90,7 +90,7 @@ const AddEditTask: React.FC = () => {
       const item = allTasks.find((item) => item.id === itemToEdit)
       if (item) {
         textField.forceInput(item.text)
-        setChosenTags(item.tags)
+        setChosenTags(Object.keys(item.order))
       }
     }
   }, [textField, allTasks, itemToEdit])

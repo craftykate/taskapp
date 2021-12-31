@@ -28,8 +28,8 @@ type AddEditTaskFormPropTypes = {
     forceInput: (value: string) => void
   }
   allTags: TagType[]
-  chosenTags: number[]
-  updateTags: (id: number) => void
+  chosenTags: string[]
+  updateTags: (id: string) => void
   itemToEdit: number | undefined
 }
 
@@ -77,13 +77,13 @@ const AddEditTaskForm: React.FC<AddEditTaskFormPropTypes> = ({
           <p>Optional Tags: </p>
           <div id={classes.tags}>
             {allTags.map((priority) => {
-              const isChosen = chosenTags.includes(priority.id)
+              const isChosen = chosenTags.includes(priority.id.toString())
                 ? `${classes.chosen}`
                 : ''
               return (
                 <TextButton
                   className={`${classes.tag} ${isChosen}`}
-                  onClick={() => updateTags(priority.id)}
+                  onClick={() => updateTags(priority.id.toString())}
                   key={priority.id}
                 >
                   #{priority.text}

@@ -3,15 +3,13 @@ import React from 'react'
 import { set, get } from 'idb-keyval'
 // Types
 import { TagType, TaskType } from 'Types/task-types'
-// Utils
-import config from 'Utils/Config/config'
 
 // Type the variables and functions that are defined in the context that can be
 // used by other components
 type TasksContextType = {
   allTasks: TaskType[]
   allTags: TagType[]
-  addTask: (text: string, tags: number[]) => void
+  addTask: (text: string, tags: string[]) => void
   toggleTagVisibility: (id: number) => void
   deleteTask: (id: number) => void
   completeTask: (id: number) => void
@@ -23,14 +21,14 @@ type TasksContextType = {
   setItemToEdit: (id?: number) => void
   showAddEditForm: boolean
   setShowAddEditForm: (arg1: boolean) => void
-  updateTask: (id: number, text: string, tags: number[]) => void
+  updateTask: (id: number, text: string, tags: string[]) => void
 }
 
 // Create the context with starting values
 const TasksContext = React.createContext<TasksContextType>({
   allTasks: [],
   allTags: [],
-  addTask: (text: string, tags: number[]) => {},
+  addTask: (text: string, tags: string[]) => {},
   toggleTagVisibility: (id: number) => {},
   deleteTask: (id: number) => {},
   completeTask: (id: number) => {},
@@ -42,7 +40,7 @@ const TasksContext = React.createContext<TasksContextType>({
   setItemToEdit: (id?: number) => {},
   showAddEditForm: false,
   setShowAddEditForm: (arg1: boolean) => {},
-  updateTask: (id: number, text: string, tags: number[]) => {},
+  updateTask: (id: number, text: string, tags: string[]) => {},
 })
 
 // Custom provider
@@ -52,15 +50,63 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   const [itemToEdit, setItemToEdit] = React.useState<number | undefined>()
   const [showAddEditForm, setShowAddEditForm] = React.useState<boolean>(false)
 
+  // Sets the order so item is at the end of every tag assigned
+  const addTaskToEnd = (tags: string[]) => {
+    let order = {}
+    if (tags.length > 0) {
+      tags.forEach((tag) => {
+        const matchingTags = allTasks.filter((task) =>
+          Object.keys(task.order).includes(tag)
+        )
+        order = {
+          ...order,
+          [tag]: matchingTags.length,
+        }
+      })
+    } else {
+      const matchingTags = allTasks.filter((task) =>
+        Object.keys(task.order).includes('blank')
+      )
+      order = {
+        blank: matchingTags.length,
+      }
+    }
+    console.log(order)
+
+    return order
+  }
+
+  // Re-sorts the tasks of a given tag so their sort orders match their index
+  const updateSortOrder = (tasks: TaskType[], tag: string) => {
+    const matchingItems = tasks.filter((task) =>
+      Object.keys(task.order).includes(tag)
+    )
+    matchingItems.sort((a, b) => a.order[tag] - b.order[tag])
+    const updatedItems = tasks.map((task) => {
+      const index = matchingItems.findIndex((item) => item.id === task.id)
+      let order = { ...task.order }
+      if (index !== -1) {
+        order = { ...order, [tag]: index }
+      }
+      return { ...task, order }
+    })
+
+    return updatedItems
+  }
+
   // Add a task
-  const addTask = (text: string, tags: number[]) => {
+  const addTask = (text: string, tags: string[]) => {
+    // Create id
     const id = +`${new Date().getTime()}${
       Math.floor(Math.random() * 899) + 100
     }`
+    // Determine order under each tag
+    const order = addTaskToEnd(tags)
+
     const newItem: TaskType = {
       id,
       text,
-      tags: tags,
+      order,
       createdAt: new Date().getTime(),
       completedAt: false,
     }
@@ -71,23 +117,61 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   }
 
   // Save details of a task
-  const updateTask = (id: number, text: string, tags: number[]) => {
+  const updateTask = (id: number, text: string, tags: string[]) => {
     setAllTasks((prevState) => {
       // Make a copy of the most recent state
-      const prevStateCopy = [...prevState]
+      let prevStateCopy = [...prevState]
 
       // Find index of item needing to be updated
       const itemIndex = prevStateCopy.findIndex((item) => item.id === id)
+      const prevItem = prevStateCopy[itemIndex]
 
-      // Copy over old item with new item, with updated params
+      // Update item's text
       prevStateCopy[itemIndex] = {
         ...prevStateCopy[itemIndex],
         text,
-        tags,
+      }
+
+      // Update sort order
+      let order = { ...prevItem.order }
+
+      // If a task used to not have tags and now does, remove the blank
+      if (tags.length > 0 && Object.keys(prevItem).includes('blank')) {
+        delete order.blank
+        prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
+      }
+
+      // If a tag was added, add task to end of that list
+      tags.forEach((tag) => {
+        if (!Object.keys(order).includes(tag.toString())) {
+          const matchingItems = prevState.filter((item) =>
+            Object.keys(item.order).includes(tag.toString())
+          )
+          order = {
+            ...order,
+            [tag.toString()]: matchingItems.length,
+          }
+        }
+        prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
+      })
+
+      // If a tag was removed, remove that tag from task and re-sort all tasks
+      // that also have that task
+      Object.keys(prevItem.order).forEach((oldTag) => {
+        if (!tags.includes(oldTag)) {
+          delete order[oldTag]
+        }
+        prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
+        prevStateCopy = updateSortOrder(prevStateCopy, oldTag)
+      })
+
+      // If tag used to have tags and now doesn't, add in the blank
+      if (!Object.keys(prevItem.order).includes('blank') && tags.length === 0) {
+        order = addTaskToEnd([])
+        prevStateCopy[itemIndex] = { ...prevStateCopy[itemIndex], order }
       }
 
       set('kt-tasks', [...prevStateCopy])
-
       // Return copy of updated copy
       return [...prevStateCopy]
     })
@@ -124,6 +208,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   // Delete a task
   // Note: not using filter here or all duplicates would be deleted which may
   // not be intended
+  // TODO: also need to re-sort any tasks that shared tags with this task
   const deleteTask = (id: number) => {
     setAllTasks((prevState) => {
       const prevStateCopy = [...prevState]
@@ -189,8 +274,8 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     // Remove tag from tasks
     setAllTasks((prevState) => {
       const updatedTasks = prevState.map((item) => {
-        if (item.tags.includes(id)) {
-          item.tags = item.tags.filter((tagId) => tagId !== id)
+        if (Object.keys(item.order).includes(id.toString())) {
+          delete item.order[id.toString()]
         }
         return item
       })
@@ -239,7 +324,81 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         isVisible: true,
       },
     ]
-    const tasks = config.defaultTasks || []
+    const tasks: TaskType[] = [
+      {
+        id: 1640554950187,
+        text: '👍 Tap me to mark me as complete',
+        order: {
+          1640387991734: 0,
+        },
+        createdAt: 1640554950187,
+        completedAt: false,
+      },
+      {
+        id: 1640554970171,
+        text: "🙊 Oops, I'm not done - tap me to undo!",
+        order: {
+          '1640388007034': 0,
+        },
+        createdAt: 1640554970171,
+        completedAt: 1640554989232,
+      },
+      {
+        id: 1640554999417,
+        text: '👉 Click my X to delete me',
+        order: {
+          '1640388021078': 0,
+        },
+        createdAt: 1640554999417,
+        completedAt: false,
+      },
+      {
+        id: 1640554999689,
+        text: '👈 Click my pencil to edit me',
+        order: {
+          '1640388021078': 1,
+        },
+        createdAt: 1640554999689,
+        completedAt: false,
+      },
+      {
+        id: 1640555006143,
+        text: 'Click the V 👆 to hide these tasks',
+        order: {
+          '1640902406334': 0,
+        },
+        createdAt: 1640555006143,
+        completedAt: false,
+      },
+      {
+        id: 1640555009713,
+        text: '😎 You can have tasks with multiple tags!',
+        order: {
+          '1640388007034': 1,
+          '1640902406334': 1,
+        },
+        createdAt: 1640555009713,
+        completedAt: false,
+      },
+      {
+        id: 1640555021024,
+        text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
+        order: {
+          blank: 0,
+        },
+        createdAt: 1640555021024,
+        completedAt: false,
+      },
+      {
+        id: 1640561989783,
+        text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
+        order: {
+          blank: 1,
+        },
+        createdAt: 1640561989783,
+        completedAt: false,
+      },
+    ]
     set('kt-tags', tags)
     set('kt-tasks', tasks)
     setAllTags(tags)
@@ -288,11 +447,82 @@ export const TasksContextProvider: React.FC = ({ children }) => {
 
     get('kt-tasks').then((storedTasks) => {
       // Fetch Tasks
-      const tasks = storedTasks
-        ? storedTasks
-        : config.defaultTasks
-        ? [...config.defaultTasks]
-        : []
+      const tasks: TaskType[] = storedTasks || [
+        {
+          id: 1640554950187,
+          text: '👍 Tap me to mark me as complete',
+          order: {
+            '1640387991734': 0,
+          },
+          createdAt: 1640554950187,
+          completedAt: false,
+        },
+        {
+          id: 1640554970171,
+          text: "🙊 Oops, I'm not done - tap me to undo!",
+          order: {
+            '1640388007034': 0,
+          },
+          createdAt: 1640554970171,
+          completedAt: 1640554989232,
+        },
+        {
+          id: 1640554999417,
+          text: '👉 Click my X to delete me',
+          order: {
+            '1640388021078': 0,
+          },
+          createdAt: 1640554999417,
+          completedAt: false,
+        },
+        {
+          id: 1640554999689,
+          text: '👈 Click my pencil to edit me',
+          order: {
+            '1640388021078': 1,
+          },
+          createdAt: 1640554999689,
+          completedAt: false,
+        },
+        {
+          id: 1640555006143,
+          text: 'Click the V 👆 to hide these tasks',
+          order: {
+            '1640902406334': 0,
+          },
+          createdAt: 1640555006143,
+          completedAt: false,
+        },
+        {
+          id: 1640555009713,
+          text: '😎 You can have tasks with multiple tags!',
+          order: {
+            '1640388007034': 1,
+            '1640902406334': 1,
+          },
+          createdAt: 1640555009713,
+          completedAt: false,
+        },
+        {
+          id: 1640555021024,
+          text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
+          order: {
+            blank: 0,
+          },
+          createdAt: 1640555021024,
+          completedAt: false,
+        },
+        {
+          id: 1640561989783,
+          text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
+          order: {
+            blank: 1,
+          },
+          createdAt: 1640561989783,
+          completedAt: false,
+        },
+      ]
+
       if (!storedTasks) set('kt-tasks', tasks)
       setAllTasks(tasks)
     })

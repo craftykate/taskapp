@@ -11,15 +11,20 @@ const TaskList: React.FC = () => {
   const { allTasks, allTags } = React.useContext(TasksContext)
   const [showUncat, setShowUncat] = React.useState(true)
 
-  allTags.sort((a, b) => a.order - b.order)
-  const noCatItems = allTasks.filter((task) => {
-    return task.tags.length === 0
-  })
+  const noCatItems = allTasks.filter((task) =>
+    Object.keys(task.order).includes('blank')
+  )
+  noCatItems.sort((a, b) => a.order.blank - b.order.blank)
   return (
     <table id={classes.taskTable}>
       <tbody>
         {allTags.map((tag) => {
-          const tagItems = allTasks.filter((item) => item.tags.includes(tag.id))
+          const tagItems = allTasks.filter((item) =>
+            Object.keys(item.order).includes(tag.id.toString())
+          )
+          tagItems.sort(
+            (a, b) => a.order[tag.id.toString()] - b.order[tag.id.toString()]
+          )
           return <TaskCategory tag={tag} tagTasks={tagItems} key={tag.id} />
         })}
         {noCatItems.length > 0 && (
