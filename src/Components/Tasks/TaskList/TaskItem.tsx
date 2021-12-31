@@ -12,9 +12,18 @@ import TextButton from 'Components/UI/TextButton/TextButton'
 type TaskItemPropTypes = {
   item: TaskType
   isLastRow?: boolean
+  tagId: number
+  handleDrag: React.DragEventHandler
+  handleDrop: React.DragEventHandler
 }
 
-const TaskItem: React.FC<TaskItemPropTypes> = ({ item, isLastRow }) => {
+const TaskItem: React.FC<TaskItemPropTypes> = ({
+  item,
+  isLastRow,
+  tagId,
+  handleDrag,
+  handleDrop,
+}) => {
   const { completeTask, deleteTask, setItemToEdit, setShowAddEditForm } =
     React.useContext(TasksContext)
 
@@ -40,7 +49,16 @@ const TaskItem: React.FC<TaskItemPropTypes> = ({ item, isLastRow }) => {
           onClick={() => completeTask(item.id)}
           isPlainText
         >
-          {item.text}
+          <span
+            draggable={true}
+            id={item.id.toString()}
+            data-tag={tagId}
+            onDragOver={(e) => e.preventDefault()}
+            onDragStart={handleDrag}
+            onDrop={handleDrop}
+          >
+            {item.text}
+          </span>
         </TextButton>
       </td>
       <td>

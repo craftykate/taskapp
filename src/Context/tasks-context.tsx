@@ -16,6 +16,7 @@ type TasksContextType = {
   addTag: (emoji: string, text: string) => void
   deleteTag: (id: number) => void
   sortTags: (tags: TagType[]) => void
+  sortTasks: (tasks: TaskType[]) => void
   resetAll: () => void
   itemToEdit: number | undefined
   setItemToEdit: (id?: number) => void
@@ -34,7 +35,8 @@ const TasksContext = React.createContext<TasksContextType>({
   completeTask: (id: number) => {},
   addTag: (emoji: string, text: string) => {},
   deleteTag: (id: number) => {},
-  sortTags: () => {},
+  sortTags: (tags: TagType[]) => {},
+  sortTasks: (tasks: TaskType[]) => {},
   resetAll: () => {},
   itemToEdit: undefined,
   setItemToEdit: (id?: number) => {},
@@ -263,10 +265,16 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     })
   }
 
-  // When tags are dragged around, make sure they are saved to local storage
+  // When tags are dragged around, make sure they are saved
   const sortTags = (tags: TagType[]) => {
     set('kt-tags', tags)
     setAllTags(tags)
+  }
+
+  // When tasks are dragged around, make sure they are saved
+  const sortTasks = (tasks: TaskType[]) => {
+    set('kt-tasks', tasks)
+    setAllTasks(tasks)
   }
 
   // Delete tag - will remove tag id from any task that has it first
@@ -405,7 +413,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     setAllTasks(tasks)
   }
 
-  // When component loads the first time get to dos and tags, if any from local
+  // When component loads the first time get tasks and tags, if any from local
   // storage
   React.useEffect(() => {
     get('kt-tags').then((storedTags) => {
@@ -538,6 +546,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     addTag,
     deleteTag,
     sortTags,
+    sortTasks,
     resetAll,
     itemToEdit,
     setItemToEdit,

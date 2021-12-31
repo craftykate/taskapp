@@ -17,6 +17,8 @@ type TaskCategoryPropTypes = {
   tagTasks: TaskType[]
   showUncat?: boolean
   setShowUncat?: (arg1: boolean) => void
+  handleDrag: React.DragEventHandler
+  handleDrop: React.DragEventHandler
 }
 
 const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
@@ -24,6 +26,8 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
   tagTasks,
   showUncat,
   setShowUncat,
+  handleDrag,
+  handleDrop,
 }) => {
   const { toggleTagVisibility } = React.useContext(TasksContext)
   const symbol = tag.emoji ? <Emoji symbol={tag.emoji} /> : null
@@ -65,7 +69,16 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
         tagTasks.map((item, index) => {
           const key = `${item.id}_${index}`
           const isLastRow = index === tagTasks.length - 1
-          return <TaskItem item={item} isLastRow={isLastRow} key={key} />
+          return (
+            <TaskItem
+              item={item}
+              isLastRow={isLastRow}
+              key={key}
+              tagId={tag.id}
+              handleDrag={handleDrag}
+              handleDrop={handleDrop}
+            />
+          )
         })}
     </>
   )
