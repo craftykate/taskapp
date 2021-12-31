@@ -23,6 +23,7 @@ type TasksContextType = {
   showAddEditForm: boolean
   setShowAddEditForm: (arg1: boolean) => void
   updateTask: (id: number, text: string, tags: string[]) => void
+  updateTag: (id: number, emoji: string, text: string) => void
 }
 
 // Create the context with starting values
@@ -43,6 +44,7 @@ const TasksContext = React.createContext<TasksContextType>({
   showAddEditForm: false,
   setShowAddEditForm: (arg1: boolean) => {},
   updateTask: (id: number, text: string, tags: string[]) => {},
+  updateTag: (id: number, emoji: string, text: string) => {},
 })
 
 // Custom provider
@@ -236,6 +238,28 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     setAllTags((prevState) => {
       set('kt-tags', [...prevState, newTag])
       return [...prevState, newTag]
+    })
+  }
+
+  // Save details of a tag
+  const updateTag = (id: number, emoji: string, text: string) => {
+    setAllTags((prevState) => {
+      // Make a copy of the most recent state
+      let prevStateCopy = [...prevState]
+
+      // Find index of item needing to be updated
+      const itemIndex = prevStateCopy.findIndex((item) => item.id === id)
+
+      // Update item's text and emoji
+      prevStateCopy[itemIndex] = {
+        ...prevStateCopy[itemIndex],
+        emoji,
+        text,
+      }
+
+      set('kt-tags', [...prevStateCopy])
+      // Return copy of updated copy
+      return [...prevStateCopy]
     })
   }
 
@@ -572,6 +596,7 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     showAddEditForm,
     setShowAddEditForm,
     updateTask,
+    updateTag,
   }
   return (
     <TasksContext.Provider value={contextValue}>

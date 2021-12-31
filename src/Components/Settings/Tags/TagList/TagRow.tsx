@@ -8,6 +8,7 @@ type TagRowPropTypes = {
   deleteTag: (id: number) => void
   handleDrag: React.DragEventHandler
   handleDrop: React.DragEventHandler
+  setTagToEdit: (id: number) => void
 }
 
 const TagRow: React.FC<TagRowPropTypes> = ({
@@ -15,6 +16,7 @@ const TagRow: React.FC<TagRowPropTypes> = ({
   deleteTag,
   handleDrag,
   handleDrop,
+  setTagToEdit,
 }) => {
   return (
     <tr>
@@ -29,8 +31,8 @@ const TagRow: React.FC<TagRowPropTypes> = ({
         {tag.text}
       </td>
       <td>
-        <TextButton onClick={() => deleteTag(tag.id)} isPlainText>
-          &#10005;
+        <TextButton onClick={() => setTagToEdit(tag.id)} isPlainText>
+          &#x270E;
         </TextButton>
       </td>
     </tr>

@@ -34,6 +34,7 @@ type AddEditTagFormPropTypes = {
     forceInput: (value: string) => void
   }
   textFieldError: boolean
+  tagToEdit: number | undefined
 }
 
 const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
@@ -44,10 +45,11 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
   emojiFieldError,
   textField,
   textFieldError,
+  tagToEdit,
 }) => {
   return (
     <Form
-      title='Add New Tag'
+      title={tagToEdit ? 'Edit Tag' : 'Add New Tag'}
       className={classes.addTag}
       onSubmit={saveTagHandler}
       onReset={resetForm}
@@ -84,7 +86,7 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
           placeholder='*Tag Name'
           ref={textField.inputRef}
         />
-        <Button type='submit'>Add Tag</Button>
+        <Button type='submit'>{tagToEdit ? 'Save Tag' : 'Add Tag'}</Button>
         <Button type='reset' isPlainText>
           Cancel
         </Button>

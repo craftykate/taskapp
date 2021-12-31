@@ -7,8 +7,16 @@ import TasksContext from 'Context/tasks-context'
 // Hooks
 import useInput, { isEmoji } from 'Hooks/use-input'
 
-const AddEditTag: React.FC = () => {
-  const { addTag } = React.useContext(TasksContext)
+type AddEditTagPropTypes = {
+  tagToEdit?: number | undefined
+  setTagToEdit?: (id?: number) => void
+}
+
+const AddEditTag: React.FC<AddEditTagPropTypes> = ({
+  tagToEdit,
+  setTagToEdit,
+}) => {
+  const { allTags, addTag, updateTag } = React.useContext(TasksContext)
 
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false)
   const [formError, setFormError] = React.useState<string>('')
@@ -33,7 +41,13 @@ const AddEditTag: React.FC = () => {
 
     if (!formHasError) {
       // No errors to process form and reset
-      addTag(emojiField.value, textField.value)
+      if (tagToEdit) {
+        // Update tag
+        updateTag(tagToEdit, emojiField.value, textField.value)
+      } else {
+        // Save a new tag
+        addTag(emojiField.value, textField.value)
+      }
       resetForm()
     } else {
       // Form has errors so set focus on first error and show message
@@ -46,6 +60,7 @@ const AddEditTag: React.FC = () => {
   const resetForm = () => {
     setIsSubmitted(false)
     setFormError('')
+    if (setTagToEdit) setTagToEdit()
 
     // Reset all inputs and lose focus
     for (const item in allItems) {
@@ -53,6 +68,18 @@ const AddEditTag: React.FC = () => {
       allItems[item].reset()
     }
   }
+
+  // When the page first loads see if there's an item to edit, if so load those
+  // details
+  React.useEffect(() => {
+    if (!emojiField.isTouched && !textField.isTouched) {
+      const item = allTags.find((item) => item.id === tagToEdit)
+      if (item) {
+        if (item.emoji) emojiField.forceInput(item.emoji)
+        textField.forceInput(item.text)
+      }
+    }
+  }, [emojiField, textField, allTags, tagToEdit])
 
   return (
     <AddEditTagForm
@@ -63,6 +90,7 @@ const AddEditTag: React.FC = () => {
       emojiFieldError={emojiFieldError}
       textField={textField}
       textFieldError={textFieldError}
+      tagToEdit={tagToEdit}
     />
   )
 }

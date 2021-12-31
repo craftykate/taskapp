@@ -96,7 +96,8 @@ const AddEditTask: React.FC = () => {
     }
   }
 
-  // When the page first loads see if there's an item to edit, if so load those details
+  // When the page first loads see if there's an item to edit, if so load those
+  // details
   React.useEffect(() => {
     if (!textField.isTouched) {
       const item = allTasks.find((item) => item.id === itemToEdit)

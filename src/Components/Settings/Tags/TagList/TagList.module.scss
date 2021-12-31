@@ -13,6 +13,11 @@
       &:nth-child(2) {
         width: 99%;
       }
+      &:last-child {
+        padding-left: 1rem;
+        text-align: center;
+        color: var(--lightGray);
+      }
     }
   }
 }

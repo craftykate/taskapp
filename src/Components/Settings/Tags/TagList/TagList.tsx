@@ -7,7 +7,11 @@ import TagRow from './TagRow'
 // Context
 import TasksContext from 'Context/tasks-context'
 
-const TagList: React.FC = () => {
+type TagListPropTypes = {
+  setTagToEdit: (id: number) => void
+}
+
+const TagList: React.FC<TagListPropTypes> = ({ setTagToEdit }) => {
   const { allTags, sortTags, deleteTag } = React.useContext(TasksContext)
   const catTags = allTags.filter((tag) => tag.id !== 0)
   catTags.sort((a, b) => a.order - b.order)
@@ -74,6 +78,7 @@ const TagList: React.FC = () => {
               deleteTag={deleteTag}
               handleDrag={handleDrag}
               handleDrop={handleDrop}
+              setTagToEdit={setTagToEdit}
             />
           ))}
         </tbody>

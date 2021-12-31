@@ -7,10 +7,12 @@ import AddEditTag from './AddEditTag/AddEditTag'
 import Card from 'Components/UI/Card/Card'
 
 const Tags: React.FC = () => {
+  const [tagToEdit, setTagToEdit] = React.useState<number>()
+
   return (
     <Card title='Edit Tags'>
-      <TagList />
-      <AddEditTag />
+      <TagList setTagToEdit={setTagToEdit} />
+      <AddEditTag tagToEdit={tagToEdit} setTagToEdit={setTagToEdit} />
     </Card>
   )
 }
