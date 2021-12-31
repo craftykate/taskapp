@@ -17,6 +17,7 @@ const AddEditTask: React.FC = () => {
     allTasks,
     updateTask,
     deleteTask,
+    focusTag,
   } = React.useContext(TasksContext)
 
   // Form states - isSubmitted is necessary for handling errors
@@ -99,14 +100,16 @@ const AddEditTask: React.FC = () => {
   // When the page first loads see if there's an item to edit, if so load those
   // details
   React.useEffect(() => {
-    if (!textField.isTouched) {
+    if (!textField.isTouched && chosenTags.length === 0) {
       const item = allTasks.find((item) => item.id === itemToEdit)
       if (item) {
         textField.forceInput(item.text)
         setChosenTags(Object.keys(item.order))
+      } else {
+        if (focusTag) setChosenTags([focusTag.toString()])
       }
     }
-  }, [textField, allTasks, itemToEdit])
+  }, [textField, allTasks, itemToEdit, focusTag, chosenTags])
 
   return (
     <AddEditTaskForm
