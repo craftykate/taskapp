@@ -280,9 +280,17 @@ export const TasksContextProvider: React.FC = ({ children }) => {
   const deleteTag = (id: number) => {
     // Remove tag from tasks
     setAllTasks((prevState) => {
+      let uncatCount = prevState.filter((item) =>
+        Object.keys(item.order).includes('0')
+      ).length
+
       const updatedTasks = prevState.map((item) => {
         if (Object.keys(item.order).includes(id.toString())) {
           delete item.order[id.toString()]
+        }
+        if (Object.keys(item.order).length === 0) {
+          item.order = { '0': uncatCount }
+          uncatCount += 1
         }
         return item
       })
