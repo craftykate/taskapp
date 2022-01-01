@@ -368,6 +368,13 @@ export const TasksContextProvider: React.FC = ({ children }) => {
         isVisible: true,
       },
       {
+        id: 1640902409128,
+        text: 'Shopping',
+        emoji: '🛒',
+        order: 4,
+        isVisible: true,
+      },
+      {
         id: 1,
         text: 'Uncategorized',
         order: -1,
@@ -376,76 +383,94 @@ export const TasksContextProvider: React.FC = ({ children }) => {
     ]
     const tasks: TaskType[] = [
       {
-        id: 1640554950187,
+        id: 1640999289371,
         text: '👍 Tap me to mark me as complete',
         order: {
           1640387991734: 0,
         },
-        createdAt: 1640554950187,
+        createdAt: 1640999289371,
         completedAt: false,
       },
       {
-        id: 1640554970171,
+        id: 1640999297256,
         text: "🙊 Oops, I'm not done - tap me to undo!",
         order: {
           '1640388007034': 0,
         },
-        createdAt: 1640554970171,
+        createdAt: 1640999297256,
         completedAt: 1640554989232,
       },
       {
-        id: 1640554999417,
-        text: '👉 Click my X to delete me',
+        id: 1640999303768,
+        text: '👉 Click my pencil to edit or delete me',
         order: {
           '1640388021078': 0,
         },
-        createdAt: 1640554999417,
+        createdAt: 1640999303768,
         completedAt: false,
       },
       {
-        id: 1640554999689,
-        text: '👈 Click my pencil to edit me',
-        order: {
-          '1640388021078': 1,
-        },
-        createdAt: 1640554999689,
-        completedAt: false,
-      },
-      {
-        id: 1640555006143,
+        id: 1640999311699,
         text: 'Click the V 👆 to hide these tasks',
         order: {
           '1640902406334': 0,
         },
-        createdAt: 1640555006143,
+        createdAt: 1640999311699,
         completedAt: false,
       },
       {
-        id: 1640555009713,
+        id: 1640999323216,
         text: '😎 You can have tasks with multiple tags!',
         order: {
           '1640388007034': 1,
           '1640902406334': 1,
         },
-        createdAt: 1640555009713,
+        createdAt: 1640999323216,
         completedAt: false,
       },
       {
-        id: 1640555021024,
-        text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
+        id: 1640999330468,
+        text: '👆 Tap on "Shopping" to focus on just those tasks',
+        order: {
+          '1640902409128': 0,
+        },
+        createdAt: 1640999330468,
+        completedAt: false,
+      },
+      {
+        id: 1640999597592,
+        text: '🔎 (Tap "Unfocus" to see them all again)',
+        order: {
+          '1640902409128': 1,
+        },
+        createdAt: 1640999597592,
+        completedAt: false,
+      },
+      {
+        id: 1640999337699,
+        text: '👋  Drag items within a tag to reorder them!',
+        order: {
+          '1640902409128': 2,
+        },
+        createdAt: 1640999337699,
+        completedAt: false,
+      },
+      {
+        id: 1640999347435,
+        text: "🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
         order: {
           '1': 0,
         },
-        createdAt: 1640555021024,
+        createdAt: 1640999347435,
         completedAt: false,
       },
       {
-        id: 1640561989783,
-        text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
+        id: 1640999355408,
+        text: '👇 Click the settings link in the footer to add, edit, delete, and rearrange tags!',
         order: {
           '1': 1,
         },
-        createdAt: 1640561989783,
+        createdAt: 1640999355408,
         completedAt: false,
       },
     ]
@@ -490,6 +515,13 @@ export const TasksContextProvider: React.FC = ({ children }) => {
           isVisible: true,
         },
         {
+          id: 1640902409128,
+          text: 'Shopping',
+          emoji: '🛒',
+          order: 4,
+          isVisible: true,
+        },
+        {
           id: 1,
           text: 'Uncategorized',
           order: -1,
@@ -505,76 +537,94 @@ export const TasksContextProvider: React.FC = ({ children }) => {
       // Fetch Tasks
       const tasks: TaskType[] = storedTasks || [
         {
-          id: 1640554950187,
+          id: 1640999289371,
           text: '👍 Tap me to mark me as complete',
           order: {
-            '1640387991734': 0,
+            1640387991734: 0,
           },
-          createdAt: 1640554950187,
+          createdAt: 1640999289371,
           completedAt: false,
         },
         {
-          id: 1640554970171,
+          id: 1640999297256,
           text: "🙊 Oops, I'm not done - tap me to undo!",
           order: {
             '1640388007034': 0,
           },
-          createdAt: 1640554970171,
+          createdAt: 1640999297256,
           completedAt: 1640554989232,
         },
         {
-          id: 1640554999417,
-          text: '👉 Click my X to delete me',
+          id: 1640999303768,
+          text: '👉 Click my pencil to edit or delete me',
           order: {
             '1640388021078': 0,
           },
-          createdAt: 1640554999417,
+          createdAt: 1640999303768,
           completedAt: false,
         },
         {
-          id: 1640554999689,
-          text: '👈 Click my pencil to edit me',
-          order: {
-            '1640388021078': 1,
-          },
-          createdAt: 1640554999689,
-          completedAt: false,
-        },
-        {
-          id: 1640555006143,
+          id: 1640999311699,
           text: 'Click the V 👆 to hide these tasks',
           order: {
             '1640902406334': 0,
           },
-          createdAt: 1640555006143,
+          createdAt: 1640999311699,
           completedAt: false,
         },
         {
-          id: 1640555009713,
+          id: 1640999323216,
           text: '😎 You can have tasks with multiple tags!',
           order: {
             '1640388007034': 1,
             '1640902406334': 1,
           },
-          createdAt: 1640555009713,
+          createdAt: 1640999323216,
           completedAt: false,
         },
         {
-          id: 1640555021024,
-          text: "	🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
+          id: 1640999330468,
+          text: '👆 Tap on "Shopping" to focus on just those tasks',
+          order: {
+            '1640902409128': 0,
+          },
+          createdAt: 1640999330468,
+          completedAt: false,
+        },
+        {
+          id: 1640999597592,
+          text: '🔎 (Tap "Unfocus" to see them all again)',
+          order: {
+            '1640902409128': 1,
+          },
+          createdAt: 1640999597592,
+          completedAt: false,
+        },
+        {
+          id: 1640999337699,
+          text: '👋  Drag items within a tag to reorder them!',
+          order: {
+            '1640902409128': 2,
+          },
+          createdAt: 1640999337699,
+          completedAt: false,
+        },
+        {
+          id: 1640999347435,
+          text: "🤔 I don't have a tag, but that's cool, any tasks without tags will show up here",
           order: {
             '1': 0,
           },
-          createdAt: 1640555021024,
+          createdAt: 1640999347435,
           completedAt: false,
         },
         {
-          id: 1640561989783,
-          text: '👇 Click the settings link in the footer to add, delete and rearrange tags!',
+          id: 1640999355408,
+          text: '👇 Click the settings link in the footer to add, edit, delete, and rearrange tags!',
           order: {
             '1': 1,
           },
-          createdAt: 1640561989783,
+          createdAt: 1640999355408,
           completedAt: false,
         },
       ]

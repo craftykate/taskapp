@@ -43,14 +43,7 @@ const TaskList: React.FC = () => {
       const dragItem = allTasks.find((item) => item.id === +dragId)
       const dropItem = allTasks.find((item) => item.id === +target.id)
 
-      if (
-        dragItem &&
-        dropItem &&
-        dragCat &&
-        dropCat &&
-        dragCat === dropCat &&
-        dragCat !== '-1'
-      ) {
+      if (dragItem && dropItem && dragCat && dropCat && dragCat === dropCat) {
         const dragItemOrder = dragItem.order[dragCat]
         const dropItemOrder = dropItem.order[dropCat]
 
