@@ -4,6 +4,7 @@ import React from 'react'
 import classes from './TaskList.module.scss'
 // Components
 import TaskItem from './TaskItem'
+import QuickAdd from './QuickAdd'
 // Context
 import TasksContext from 'Context/tasks-context'
 // Types
@@ -69,6 +70,7 @@ const TaskCategory: React.FC<TaskCategoryPropTypes> = ({
             />
           )
         })}
+      {focusTag && <QuickAdd />}
     </>
   )
 }
