@@ -12,9 +12,6 @@ const Footer: React.FC = () => {
           <li>
             <Link to='/settings'>Settings</Link>
           </li>
-          <li>
-            Site built by <a href='https://katemcfaul.surge.sh'>Kate McFaul</a>
-          </li>
         </ul>
         <ul>
           <li>
@@ -24,8 +21,13 @@ const Footer: React.FC = () => {
         </ul>
         <ul>
           <li>
-            This site stores all tasks and tags in your browser. If you clear
-            your browser data your info will go with it.
+            This site stores all tasks and tags in your browser. Clearing your
+            cache will reset your tasks.
+          </li>
+        </ul>
+        <ul>
+          <li>
+            Site built by <a href='https://katemcfaul.surge.sh'>Kate McFaul</a>
           </li>
         </ul>
       </footer>
