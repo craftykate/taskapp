@@ -4,12 +4,15 @@ import React from 'react'
 import classes from './Tasks.module.scss'
 // Components
 import TaskList from './TaskList/TaskList'
-import AddEditTask from 'Components/Tasks/AddEditTask/AddEditTask'
 // Context
 import TasksContext from 'Context/tasks-context'
 // UI
 import Card from 'Components/UI/Card/Card'
 import TextButton from 'Components/UI/TextButton/TextButton'
+
+const AddEditTask = React.lazy(
+  () => import('Components/Tasks/AddEditTask/AddEditTask')
+)
 
 const Tasks = () => {
   const { showAddEditForm, setShowAddEditForm, focusTag, setFocusTag } =
