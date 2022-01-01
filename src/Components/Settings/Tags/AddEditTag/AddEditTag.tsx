@@ -16,10 +16,12 @@ const AddEditTag: React.FC<AddEditTagPropTypes> = ({
   tagToEdit,
   setTagToEdit,
 }) => {
-  const { allTags, addTag, updateTag } = React.useContext(TasksContext)
+  const { allTags, addTag, updateTag, deleteTag } =
+    React.useContext(TasksContext)
 
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false)
   const [formError, setFormError] = React.useState<string>('')
+  const [tagInForm, setTagInForm] = React.useState<number>()
 
   // Set up each field
   const { field: emojiField } = useInput(false, isEmoji)
@@ -56,6 +58,14 @@ const AddEditTag: React.FC<AddEditTagPropTypes> = ({
     }
   }
 
+  // Delete task then close form
+  const deleteTagHandler = () => {
+    if (tagToEdit) {
+      deleteTag(tagToEdit)
+      resetForm()
+    }
+  }
+
   // Reset form
   const resetForm = () => {
     setIsSubmitted(false)
@@ -69,17 +79,21 @@ const AddEditTag: React.FC<AddEditTagPropTypes> = ({
     }
   }
 
-  // When the page first loads see if there's an item to edit, if so load those
-  // details
+  // When the page first loads or if tag in edit form was changed, check if
+  // there's a tag to edit, if so load it into edit form
   React.useEffect(() => {
-    if (!emojiField.isTouched && !textField.isTouched) {
+    if (
+      (!emojiField.isTouched && !textField.isTouched) ||
+      tagToEdit !== tagInForm
+    ) {
       const item = allTags.find((item) => item.id === tagToEdit)
       if (item) {
         if (item.emoji) emojiField.forceInput(item.emoji)
         textField.forceInput(item.text)
+        setTagInForm(item.id)
       }
     }
-  }, [emojiField, textField, allTags, tagToEdit])
+  }, [emojiField, textField, allTags, tagToEdit, tagInForm])
 
   return (
     <AddEditTagForm
@@ -91,6 +105,7 @@ const AddEditTag: React.FC<AddEditTagPropTypes> = ({
       textField={textField}
       textFieldError={textFieldError}
       tagToEdit={tagToEdit}
+      deleteTagHandler={deleteTagHandler}
     />
   )
 }

@@ -13,7 +13,7 @@ type TagListPropTypes = {
 
 const TagList: React.FC<TagListPropTypes> = ({ setTagToEdit }) => {
   const { allTags, sortTags, deleteTag } = React.useContext(TasksContext)
-  const catTags = allTags.filter((tag) => tag.id !== 0)
+  const catTags = allTags.filter((tag) => tag.id !== 1)
   catTags.sort((a, b) => a.order - b.order)
 
   const [dragId, setDragId] = React.useState<number>()

@@ -35,6 +35,7 @@ type AddEditTagFormPropTypes = {
   }
   textFieldError: boolean
   tagToEdit: number | undefined
+  deleteTagHandler: () => void
 }
 
 const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
@@ -46,6 +47,7 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
   textField,
   textFieldError,
   tagToEdit,
+  deleteTagHandler,
 }) => {
   return (
     <Form
@@ -91,6 +93,11 @@ const AddEditTagForm: React.FC<AddEditTagFormPropTypes> = ({
           Cancel
         </Button>
       </div>
+      {tagToEdit && (
+        <Button id={classes.deleteTask} onClick={deleteTagHandler}>
+          Delete Tag
+        </Button>
+      )}
     </Form>
   )
 }
