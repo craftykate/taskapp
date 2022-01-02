@@ -1,8 +1,8 @@
 // Packages
 import { useHistory } from 'react-router'
 // Components
-import Tags from 'Components/Settings/Tags/Tags'
-import ResetData from 'Components/Settings/ResetData/ResetData'
+import Tags from 'Components/Tags/Tags'
+import ResetData from 'Components/ResetData/ResetData'
 // UI
 import Button from 'Components/UI/Button/Button'
 

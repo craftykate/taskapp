@@ -9,7 +9,7 @@ import Button from 'Components/UI/Button/Button'
 import Message from 'Components/UI/Message/Message'
 import TextButton from 'Components/UI/TextButton/TextButton'
 import Modal from 'Components/UI/Modal/Modal'
-import AddEditTag from 'Components/Settings/Tags/AddEditTag/AddEditTag'
+import AddEditTag from 'Components/Tags/AddEditTag/AddEditTag'
 
 type AddEditTaskFormPropTypes = {
   saveTaskHandler: (e: React.FormEvent) => void
