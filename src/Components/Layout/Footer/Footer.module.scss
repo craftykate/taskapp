@@ -14,13 +14,15 @@
       }
     }
   }
-  a {
+  a,
+  .footerLink {
     color: inherit;
     text-decoration: underline;
   }
 }
 @media (hover: hover) {
-  #footer a:hover {
+  #footer a:hover,
+  #footer .footerLink:hover {
     color: var(--subAccent);
   }
 }

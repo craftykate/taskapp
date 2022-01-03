@@ -3,8 +3,18 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 // CSS
 import classes from './Footer.module.scss'
+// Store
+import { Action, ActionType } from 'Store/index'
+// UI
+import TextButton from 'Components/UI/TextButton/TextButton'
 
-const Footer: React.FC = () => {
+type FooterPropTypes = {
+  dispatch: (action: Action) => void
+  darkMode: boolean | undefined
+}
+const Footer: React.FC<FooterPropTypes> = ({ dispatch, darkMode }) => {
+  const themeLink = darkMode ? 'Go light' : 'Go dark'
+
   return (
     <>
       <footer id={classes.footer}>
@@ -12,6 +22,17 @@ const Footer: React.FC = () => {
           <li>
             <Link to='/settings'>Settings</Link>
           </li>
+          {process.env.REACT_APP_ENV === 'LOCAL' && (
+            <li>
+              <TextButton
+                isPlainText
+                className={classes.footerLink}
+                onClick={() => dispatch({ type: ActionType.toggleTheme })}
+              >
+                {themeLink}
+              </TextButton>
+            </li>
+          )}
         </ul>
         <ul>
           <li>

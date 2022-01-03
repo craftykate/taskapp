@@ -1,20 +1,34 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import './index.scss'
 import App from 'Components/App/App'
+import store from 'Store/index'
 import 'Utils/Config/config'
 import { TasksContextProvider } from 'Context/tasks-context'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
 
+// Hide most logs in prod. Let info and error through
+if (process.env.REACT_APP_ENV === 'PROD') {
+  console.log = () => {}
+  console.debug = () => {}
+  console.warn = () => {}
+  console.time = () => {}
+  console.timeLog = () => {}
+  console.timeEnd = () => {}
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <TasksContextProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </TasksContextProvider>
+    <Provider store={store}>
+      <TasksContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </TasksContextProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

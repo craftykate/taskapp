@@ -26,3 +26,5 @@ yarn-error.log*
 
 config.ts
 CNAME
+sample-context.tsx
+sample-reducer.js
